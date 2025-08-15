@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - RentaExpress</title>
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--light-gray), #d5dbdb);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .login-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .login-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--accent-color);
+            background: #fdf2f2;
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: var(--white);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: var(--dark-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary-color);
+            color: var(--secondary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--secondary-color);
+            color: var(--white);
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading spinner */
+        .btn-loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -12px;
+            margin-top: -12px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Links */
+        .auth-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .auth-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password visibility toggle */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--dark-gray);
+            user-select: none;
+        }
+
+        .password-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .login-container {
+                margin: 1rem auto;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        /* Input focus effects */
+        .form-group {
+            position: relative;
+        }
+
+        .form-control:focus + .form-label,
+        .form-control:not(:placeholder-shown) + .form-label {
+            transform: translateY(-1.5rem) scale(0.85);
+            color: var(--secondary-color);
+        }
+
+        /* Welcome message */
+        .welcome-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">RentaExpress</div>
+            <ul class="nav-links">
+                <li><a href="register.html">Registrarse</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="login-container">
+            <h2 class="login-title">Iniciar Sesión</h2>
+            
+            <div class="welcome-message">
+                <p>¡Bienvenido de vuelta! Ingresa tus credenciales para acceder a tu cuenta.</p>
+            </div>
+            
+            <div id="login-alerts"></div>
+            
+            <form id="login-form" novalidate>
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" class="form-control" required 
+                           placeholder="ejemplo@correo.com" autocomplete="email">
+                    <div class="error-message" id="email-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" class="form-control" required 
+                               placeholder="Tu contraseña" autocomplete="current-password">
+                        <span class="password-toggle" onclick="togglePassword()">👁</span>
+                    </div>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label style="display: flex; align-items: center; font-weight: normal; cursor: pointer;">
+                        <input type="checkbox" id="remember-me" style="margin-right: 0.5rem;">
+                        Recordar mi sesión
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="login-btn">
+                    Iniciar Sesión
+                </button>
+            </form>
+            
+            <div class="auth-links">
+                <p>¿No tienes cuenta? <a href="register.html">¡Regístrate gratis aquí!</a></p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="#" onclick="showForgotPassword()">¿Olvidaste tu contraseña?</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Variables globales
+        const API_BASE = `${location.origin}/RentaExpress/backend`;
+        let isLoading = false;
+
+        // ========================================
+        // FUNCIONES PRINCIPALES
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si ya está logueado
+            checkExistingSession();
+            
+            // Configurar validación en tiempo real
+            setupRealTimeValidation();
+            
+            // Auto-focus en el primer campo
+            document.getElementById('email').focus();
+        });
+
+        // Verificar sesión existente
+        async function checkExistingSession() {
+    try {
+        const response = await fetch(`${API_BASE}/check-session.php`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.authenticated) {
+            const redirectUrl = '../frontend/inicio.html';
+            showAlert('Ya tienes una sesión activa. Redirigiendo...', 'info');
+            setTimeout(() => {
+                window.location.href = redirectUrl;
+            }, 1500);
+            return true; // Indicate session exists
+        }
+        
+        return false; // No active session
+        
+    } catch (error) {
+        console.log('No hay sesión activa:', error.message);
+        return false;
+    }
+}
+
+        // Configurar validación en tiempo real
+        function setupRealTimeValidation() {
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            emailInput.addEventListener('blur', validateEmail);
+            emailInput.addEventListener('input', clearError);
+            
+            passwordInput.addEventListener('blur', validatePassword);
+            passwordInput.addEventListener('input', clearError);
+        }
+
+        // ========================================
+        // VALIDACIONES
+        // ========================================
+
+        function validateEmail() {
+            const email = document.getElementById('email');
+            const errorDiv = document.getElementById('email-error');
+            
+            if (!email.value) {
+                showFieldError('email', 'El correo electrónico es requerido');
+                return false;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                showFieldError('email', 'Por favor ingresa un correo válido');
+                return false;
+            }
+            
+            clearFieldError('email');
+            return true;
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('password');
+            const errorDiv = document.getElementById('password-error');
+            
+            if (!password.value) {
+                showFieldError('password', 'La contraseña es requerida');
+                return false;
+            }
+            
+            if (password.value.length < 6) {
+                showFieldError('password', 'La contraseña debe tener al menos 6 caracteres');
+                return false;
+            }
+            
+            clearFieldError('password');
+            return true;
+        }
+
+        function showFieldError(fieldName, message) {
+    const field = document.getElementById(fieldName);
+    const errorDiv = document.getElementById(`${fieldName}-error`);
+    
+    if (field) field.classList.add('error');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.classList.add('show');
+    }
+}
+
+function clearFieldError(fieldName) {
+    const field = document.getElementById(fieldName);
+    const errorDiv = document.getElementById(`${fieldName}-error`);
+    
+    if (field) field.classList.remove('error');
+    if (errorDiv) {
+        errorDiv.textContent = '';
+        errorDiv.classList.remove('show');
+    }
+}
+
+        function clearError(e) {
+            const fieldName = e.target.id;
+            clearFieldError(fieldName);
+        }
+
+        // ========================================
+        // FUNCIONES DE LOGIN
+        // ========================================
+
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (isLoading) return;
+            
+            // Validar campos
+            const isEmailValid = validateEmail();
+            const isPasswordValid = validatePassword();
+            
+            if (!isEmailValid || !isPasswordValid) {
+                showAlert('Por favor corrige los errores antes de continuar', 'error');
+                return;
+            }
+            
+            await performLogin();
+        });
+
+        async function performLogin() {
+    const button = document.getElementById('login-btn');
+    const url = `${API_BASE}/login.php`;
+
+    try {
+        setLoadingState(true);
+
+        const formData = {
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value
+        };
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            credentials: 'include', // ok si front/back mismo origen
+            body: JSON.stringify(formData)
+        });
+
+        // Intentar parsear JSON aunque haya status != 200
+        let data;
+        try {
+            data = await response.json();
+        } catch (parseErr) {
+            console.error('La respuesta NO es JSON. Status:', response.status);
+            showAlert(
+                `No se recibió JSON del servidor (status ${response.status}). Revisa que exista ${url} y que devuelva JSON.`,
+                'error'
+            );
+            return;
+        }
+
+        if (!response.ok) {
+            // Respuesta de error pero en JSON
+            console.error('Error del servidor:', data);
+            showAlert(data.message || `Error ${response.status}`, 'error');
+            return;
+        }
+
+        // Respuesta OK y JSON válido
+        if (data.success) {
+            showAlert('¡Inicio de sesión exitoso! Redirigiendo...', 'success');
+            document.getElementById('login-form').reset();
+            setTimeout(() => {
+                window.location.href = data.redirect || '../frontend/inicio.html';
+            }, 1200);
+        } else {
+            showAlert(data.message || 'Credenciales incorrectas. Verifica email y contraseña.', 'error');
+        }
+
+    } catch (error) {
+        console.error('Error network/CORS en login:', error);
+        showAlert(
+          'Error de conexión. Verifica:\n' +
+          '1) Estás abriendo el front vía: http://localhost/RentaExpress/frontend/register.html\n' +
+          `2) Que exista el archivo ${location.origin}/RentaExpress/backend/login.php\n` +
+          '3) Apache está encendido (XAMPP).',
+          'error'
+        );
+    } finally {
+        setLoadingState(false);
+    }
+}
+
+
+        function handleValidationErrors(errors) {
+            // Limpiar errores previos
+            clearFieldError('email');
+            clearFieldError('password');
+            
+            // Mostrar errores específicos
+            if (errors.email) {
+                showFieldError('email', errors.email[0]);
+            }
+            if (errors.password) {
+                showFieldError('password', errors.password[0]);
+            }
+        }
+
+        function setLoadingState(loading) {
+            isLoading = loading;
+            const button = document.getElementById('login-btn');
+            
+            if (loading) {
+                button.disabled = true;
+                button.classList.add('btn-loading');
+                button.textContent = '';
+            } else {
+                button.disabled = false;
+                button.classList.remove('btn-loading');
+                button.textContent = 'Iniciar Sesión';
+            }
+        }
+
+        // ========================================
+        // FUNCIONES DE UTILIDAD
+        // ========================================
+
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁';
+            }
+        }
+
+        function showAlert(message, type) {
+    const alertsContainer = document.getElementById('login-alerts');
+    
+    // Limpiar alertas previas
+    alertsContainer.innerHTML = '';
+    
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type}`; // Added backticks here
+    alertDiv.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>${message}</span>
+            <button onclick="this.parentElement.parentElement.remove()" 
+                    style="background: none; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.7;"
+                    aria-label="Cerrar alerta">
+                ✖
+            </button>
+        </div>
+    `;
+    
+    alertsContainer.appendChild(alertDiv);
+    
+    // Auto-remove después de 5 segundos para alertas de error
+    if (type === 'error') {
+        setTimeout(() => {
+            if (alertDiv.parentElement) {
+                alertDiv.remove();
+            }
+        }, 5000);
+    }
+}
+
+        function showForgotPassword() {
+            showAlert('Funcionalidad de recuperación de contraseña próximamente. Contacta al administrador si necesitas ayuda.', 'info');
+        }
+
+        // ========================================
+        // ATAJOS DE TECLADO
+        // ========================================
+
+        document.addEventListener('keydown', function(e) {
+            // Enter en cualquier campo del formulario
+            if (e.key === 'Enter' && e.target.closest('#login-form')) {
+                e.preventDefault();
+                document.getElementById('login-form').requestSubmit();
+            }
+            
+            // Escape para limpiar errores
+            if (e.key === 'Escape') {
+                clearFieldError('email');
+                clearFieldError('password');
+                document.getElementById('login-alerts').innerHTML = '';
+            }
+        });
+
+        // ========================================
+        // DEMO DATA (Para testing)
+        // ========================================
+
+        // Función para rellenar con datos de prueba (solo para desarrollo)
+        function fillDemoData() {
+            document.getElementById('email').value = 'admin@rentcar.com';
+            document.getElementById('password').value = 'admin123';
+        }
+
+        // Activar con Ctrl + D (solo en desarrollo)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                fillDemoData();
+                showAlert('Datos de prueba cargados (solo para desarrollo)', 'info');
+            }
+        });
+    </script>
+</body>
+</html>

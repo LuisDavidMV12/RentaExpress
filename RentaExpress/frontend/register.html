@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - RentaExpress</title>
+    <style>
+        /* Estilos principales */
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-gray: #ecf0f1;
+            --dark-gray: #7f8c8d;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--light-gray), #d5dbdb);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: background 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .register-container {
+            max-width: 500px;
+            margin: 2rem auto;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .register-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .register-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--accent-color);
+            background: #fdf2f2;
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Success message */
+        .success-message {
+            color: var(--success-color);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-color), #2980b9);
+            color: var(--white);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: var(--dark-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading spinner */
+        .btn-loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -12px;
+            margin-top: -12px;
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Links */
+        .auth-links {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+
+        .auth-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Password visibility toggle */
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--dark-gray);
+            user-select: none;
+        }
+
+        .password-toggle:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .register-container {
+                margin: 1rem auto;
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        /* Welcome message */
+        .welcome-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">RentaExpress</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Iniciar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="register-container">
+            <h2 class="register-title">Crear Cuenta</h2>
+            
+            <div class="welcome-message">
+                <p>¡Únete a RentaExpress y accede a los mejores vehículos!</p>
+            </div>
+            
+            <div id="register-alerts"></div>
+            
+            <form id="register-form" novalidate>
+                <div class="form-group">
+                    <label for="name">Nombre Completo</label>
+                    <input type="text" id="name" class="form-control" required 
+                           placeholder="Juan Pérez" autocomplete="name">
+                    <div class="error-message" id="name-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Nombre de Usuario</label>
+                    <input type="text" id="username" class="form-control" required 
+                           placeholder="juan123" autocomplete="username">
+                    <div class="error-message" id="username-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo Electrónico</label>
+                    <input type="email" id="email" class="form-control" required 
+                           placeholder="ejemplo@correo.com" autocomplete="email">
+                    <div class="error-message" id="email-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="tel" id="phone" class="form-control" 
+                           placeholder="+1 809-555-0123" autocomplete="tel">
+                    <div class="error-message" id="phone-error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <div style="position: relative;">
+                        <input type="password" id="password" class="form-control" required 
+                               placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                        <span class="password-toggle" onclick="togglePassword('password')">👁</span>
+                    </div>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirmar Contraseña</label>
+                    <div style="position: relative;">
+                        <input type="password" id="confirm-password" class="form-control" required 
+                               placeholder="Repite tu contraseña" autocomplete="new-password">
+                        <span class="password-toggle" onclick="togglePassword('confirm-password')">👁</span>
+                    </div>
+                    <div class="error-message" id="confirm-password-error"></div>
+                    <div class="success-message" id="confirm-password-success"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="register-btn">
+                    Registrarse
+                </button>
+            </form>
+            
+            <div class="auth-links">
+                <p>¿Ya tienes cuenta? <a href="login.html">¡Inicia sesión aquí!</a></p>
+                <p style="margin-top: 0.5rem;">
+                    <a href="index.html">← Volver al inicio</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Variables globales
+        const API_BASE = `${location.origin}/RentaExpress/backend`; 
+        let isLoading = false;
+
+        // ========================================
+        // FUNCIONES PRINCIPALES
+        // ========================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar si ya está logueado
+            checkExistingSession();
+            
+            // Configurar validación en tiempo real
+            setupRealTimeValidation();
+            
+            // Auto-focus en el primer campo
+            document.getElementById('name').focus();
+        });
+
+        // Verificar sesión existente
+        async function checkExistingSession() {
+            try {
+                const response = await fetch(`${API_BASE}/check-session`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.authenticated) {
+                    const redirectUrl = data.user.role === 'admin' ? 'admin.html' : 'user.html';
+                    showAlert('Ya tienes una sesión activa. Redirigiendo...', 'info');
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 1500);
+                    return true;
+                }
+                
+                return false;
+                
+            } catch (error) {
+                console.log('No hay sesión activa:', error.message);
+                return false;
+            }
+        }
+
+        // Configurar validación en tiempo real
+        function setupRealTimeValidation() {
+            const nameInput = document.getElementById('name');
+            const usernameInput = document.getElementById('username');
+            const emailInput = document.getElementById('email');
+            const phoneInput = document.getElementById('phone');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('confirm-password');
+            
+            nameInput.addEventListener('blur', validateName);
+            nameInput.addEventListener('input', clearError);
+
+            usernameInput.addEventListener('blur', validateUsername);
+            usernameInput.addEventListener('input', clearError);
+            
+            emailInput.addEventListener('blur', validateEmail);
+            emailInput.addEventListener('input', clearError);
+
+            phoneInput.addEventListener('blur', validatePhone);
+            phoneInput.addEventListener('input', clearError);
+            
+            passwordInput.addEventListener('blur', validatePassword);
+            passwordInput.addEventListener('input', clearError);
+
+            confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
+            confirmPasswordInput.addEventListener('input', function(e) {
+                clearError(e);
+                clearSuccess(e);
+                validateConfirmPassword();
+            });
+        }
+
+        // ========================================
+        // VALIDACIONES
+        // ========================================
+
+        function validateName() {
+            const name = document.getElementById('name');
+            
+            if (!name.value.trim()) {
+                showFieldError('name', 'El nombre completo es requerido');
+                return false;
+            }
+
+            if (name.value.trim().length < 2) {
+                showFieldError('name', 'El nombre debe tener al menos 2 caracteres');
+                return false;
+            }
+            
+            clearFieldError('name');
+            return true;
+        }
+
+        function validateUsername() {
+            const username = document.getElementById('username');
+            
+            if (!username.value.trim()) {
+                showFieldError('username', 'El nombre de usuario es requerido');
+                return false;
+            }
+
+            if (username.value.trim().length < 3) {
+                showFieldError('username', 'El nombre de usuario debe tener al menos 3 caracteres');
+                return false;
+            }
+
+            const usernameRegex = /^[a-zA-Z0-9_]+$/;
+            if (!usernameRegex.test(username.value.trim())) {
+                showFieldError('username', 'Solo se permiten letras, números y guiones bajos');
+                return false;
+            }
+            
+            clearFieldError('username');
+            return true;
+        }
+
+        function validateEmail() {
+            const email = document.getElementById('email');
+            
+            if (!email.value.trim()) {
+                showFieldError('email', 'El correo electrónico es requerido');
+                return false;
+            }
+            
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                showFieldError('email', 'Por favor ingresa un correo válido');
+                return false;
+            }
+            
+            clearFieldError('email');
+            return true;
+        }
+
+        function validatePhone() {
+            const phone = document.getElementById('phone');
+            
+            if (phone.value.trim() && phone.value.trim().length < 10) {
+                showFieldError('phone', 'El teléfono debe tener al menos 10 dígitos');
+                return false;
+            }
+            
+            clearFieldError('phone');
+            return true;
+        }
+
+        function validatePassword() {
+            const password = document.getElementById('password');
+            
+            if (!password.value) {
+                showFieldError('password', 'La contraseña es requerida');
+                return false;
+            }
+            
+            if (password.value.length < 6) {
+                showFieldError('password', 'La contraseña debe tener al menos 6 caracteres');
+                return false;
+            }
+            
+            clearFieldError('password');
+            
+            // Validar confirmación si ya tiene valor
+            const confirmPassword = document.getElementById('confirm-password');
+            if (confirmPassword.value) {
+                validateConfirmPassword();
+            }
+            
+            return true;
+        }
+
+        function validateConfirmPassword() {
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm-password');
+            
+            if (!confirmPassword.value) {
+                showFieldError('confirm-password', 'Debes confirmar tu contraseña');
+                return false;
+            }
+            
+            if (password.value !== confirmPassword.value) {
+                showFieldError('confirm-password', 'Las contraseñas no coinciden');
+                clearFieldSuccess('confirm-password');
+                return false;
+            }
+            
+            clearFieldError('confirm-password');
+            showFieldSuccess('confirm-password', '✓ Las contraseñas coinciden');
+            return true;
+        }
+
+        function showFieldError(fieldName, message) {
+            const field = document.getElementById(fieldName);
+            const errorDiv = document.getElementById(`${fieldName}-error`);
+            
+            if (field) field.classList.add('error');
+            if (errorDiv) {
+                errorDiv.textContent = message;
+                errorDiv.classList.add('show');
+            }
+        }
+
+        function clearFieldError(fieldName) {
+            const field = document.getElementById(fieldName);
+            const errorDiv = document.getElementById(`${fieldName}-error`);
+            
+            if (field) field.classList.remove('error');
+            if (errorDiv) {
+                errorDiv.textContent = '';
+                errorDiv.classList.remove('show');
+            }
+        }
+
+        function showFieldSuccess(fieldName, message) {
+            const successDiv = document.getElementById(`${fieldName}-success`);
+            
+            if (successDiv) {
+                successDiv.textContent = message;
+                successDiv.classList.add('show');
+            }
+        }
+
+        function clearFieldSuccess(fieldName) {
+            const successDiv = document.getElementById(`${fieldName}-success`);
+            
+            if (successDiv) {
+                successDiv.textContent = '';
+                successDiv.classList.remove('show');
+            }
+        }
+
+        function clearError(e) {
+            const fieldName = e.target.id;
+            clearFieldError(fieldName);
+        }
+
+        function clearSuccess(e) {
+            const fieldName = e.target.id;
+            clearFieldSuccess(fieldName);
+        }
+
+        // ========================================
+        // FUNCIONES DE REGISTRO
+        // ========================================
+
+        document.getElementById('register-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (isLoading) return;
+            
+            // Validar todos los campos
+            const isNameValid = validateName();
+            const isUsernameValid = validateUsername();
+            const isEmailValid = validateEmail();
+            const isPhoneValid = validatePhone();
+            const isPasswordValid = validatePassword();
+            const isConfirmPasswordValid = validateConfirmPassword();
+            
+            if (!isNameValid || !isUsernameValid || !isEmailValid || !isPhoneValid || !isPasswordValid || !isConfirmPasswordValid) {
+                showAlert('Por favor corrige los errores antes de continuar', 'error');
+                return;
+            }
+            
+            await performRegister();
+        });
+
+        async function performRegister() {
+  const button = document.getElementById('register-btn');
+  const url = `${API_BASE}/register.php`;
+
+  try {
+    setLoadingState(true);
+
+    const formData = {
+      name: document.getElementById('name').value.trim(),
+      username: document.getElementById('username').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      password: document.getElementById('password').value
+    };
+
+    // ⚠️ IMPORTANTE: si estás abriendo el front en http://localhost/... (mismo origen),
+    // puedes mantener credentials: 'include'. Si aún así tienes líos, quítalo.
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(formData)
+    });
+
+    // Intenta leer JSON incluso si el status no es 2xx
+    let data;
+    try {
+      data = await response.json();
+    } catch (parseErr) {
+      // Cuando es 404/500 de Apache y devuelve HTML, aquí falla
+      console.error('La respuesta no es JSON. Status:', response.status);
+      showAlert(
+        `No se recibió JSON del servidor (status ${response.status}). ` +
+        `Revisa que exista ${url} y apunte al archivo correcto.`,
+        'error'
+      );
+      return;
+    }
+
+    if (!response.ok) {
+      // Respuesta con error pero en JSON
+      console.error('Respuesta del servidor con error:', data);
+      showAlert(data.message || `Error ${response.status}.`, 'error');
+      return;
+    }
+
+    if (data.success) {
+      showAlert('¡Registro exitoso! Redirigiendo...', 'success');
+      document.getElementById('register-form').reset();
+      setTimeout(() => {
+        window.location.href = data.redirect || '../frontend/login.html';
+      }, 1500);
+    } else {
+      if (data.errors) {
+        handleValidationErrors(data.errors);
+      } else {
+        showAlert(data.message || 'Error en el registro. Intenta de nuevo.', 'error');
+      }
+    }
+  } catch (error) {
+    // Aquí caen errores de red/CORS/URL imposible de resolver
+    console.error('Error durante el registro (network/CORS):', error);
+    showAlert(
+      'Error de conexión. Verifica:\n' +
+      '1) Que abriste el front en http://localhost/RentaExpress/frontend/register.html\n' +
+      '2) Que la URL existe: ' + url + '\n' +
+      '3) Que Apache está encendido',
+      'error'
+    );
+  } finally {
+    setLoadingState(false);
+  }
+}
+
+        function handleValidationErrors(errors) {
+            // Limpiar errores previos
+            const fields = ['name', 'username', 'email', 'phone', 'password'];
+            fields.forEach(field => clearFieldError(field));
+            
+            // Mostrar errores específicos
+            Object.keys(errors).forEach(field => {
+                if (errors[field] && errors[field][0]) {
+                    showFieldError(field, errors[field][0]);
+                }
+            });
+        }
+
+        function setLoadingState(loading) {
+            isLoading = loading;
+            const button = document.getElementById('register-btn');
+            
+            if (loading) {
+                button.disabled = true;
+                button.classList.add('btn-loading');
+                button.textContent = '';
+            } else {
+                button.disabled = false;
+                button.classList.remove('btn-loading');
+                button.textContent = 'Registrarse';
+            }
+        }
+
+        // ========================================
+        // FUNCIONES DE UTILIDAD
+        // ========================================
+
+        function togglePassword(fieldId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleIcon = passwordInput.parentElement.querySelector('.password-toggle');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁';
+            }
+        }
+
+        function showAlert(message, type) {
+            const alertsContainer = document.getElementById('register-alerts');
+            
+            // Limpiar alertas previas
+            alertsContainer.innerHTML = '';
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" 
+                            style="background: none; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.7;"
+                            aria-label="Cerrar alerta">
+                        ✖
+                    </button>
+                </div>
+            `;
+            
+            alertsContainer.appendChild(alertDiv);
+            
+            // Auto-remove después de 5 segundos para alertas de error
+            if (type === 'error') {
+                setTimeout(() => {
+                    if (alertDiv.parentElement) {
+                        alertDiv.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // ========================================
+        // ATAJOS DE TECLADO
+        // ========================================
+
+        document.addEventListener('keydown', function(e) {
+            // Enter en cualquier campo del formulario
+            if (e.key === 'Enter' && e.target.closest('#register-form')) {
+                e.preventDefault();
+                document.getElementById('register-form').requestSubmit();
+            }
+            
+            // Escape para limpiar errores
+            if (e.key === 'Escape') {
+                const fields = ['name', 'username', 'email', 'phone', 'password', 'confirm-password'];
+                fields.forEach(field => {
+                    clearFieldError(field);
+                    clearFieldSuccess(field);
+                });
+                document.getElementById('register-alerts').innerHTML = '';
+            }
+        });
+
+        // ========================================
+        // DEMO DATA (Para testing)
+        // ========================================
+
+        // Función para rellenar con datos de prueba (solo para desarrollo)
+        function fillDemoData() {
+            document.getElementById('name').value = 'Juan Pérez';
+            document.getElementById('username').value = 'juan123';
+            document.getElementById('email').value = 'juan@correo.com';
+            document.getElementById('phone').value = '+1 809-555-0123';
+            document.getElementById('password').value = 'password123';
+            document.getElementById('confirm-password').value = 'password123';
+        }
+
+        // Activar con Ctrl + D (solo en desarrollo)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'd') {
+                e.preventDefault();
+                fillDemoData();
+                showAlert('Datos de prueba cargados (solo para desarrollo)', 'info');
+            }
+        });
+    </script>
+</body>
+</html>
